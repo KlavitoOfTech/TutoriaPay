@@ -60,24 +60,34 @@ export default function App() {
 
           {/* Student */}
 
-          <Route
+          {/* <Route
             path="/dashboard"
             element={
               <ProtectedRoute role="student">
                 <Dashboard />
               </ProtectedRoute>
             }
-          />
+          /> */}
 
           {/* Admin */}
 
-          <Route
+          {/* <Route
             path="/admin/dashboard"
             element={
               <ProtectedRoute role="admin">
                 <AdminDashboard />
               </ProtectedRoute>
             }
+          /> */}
+
+          {/* Unprotected Student and admin route */}
+          <Route 
+            path="/dashboard" 
+            element={<Dashboard />} 
+          />
+          <Route 
+            path="/admin/dashboard" 
+            element={<AdminDashboard />} 
           />
 
           {/* Future Routes */}

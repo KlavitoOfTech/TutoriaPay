@@ -11,9 +11,10 @@ import {
   LayoutDashboard,
   GraduationCap,
 } from "lucide-react";
+import { handleSignIn } from "../context/auth.js";
 
 export default function AdminLogin() {
-  const { loginAdmin } = useAuth();
+  //const { loginAdmin } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -39,7 +40,9 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      await loginAdmin(form.email, form.password);
+      //await loginAdmin(form.email, form.password);
+      const { error, data } = await handleSignIn(form.email, form.password); // Call the Supabase sign-in function
+      if (error) return console.error(error); // Handle any errors from Supabase
       navigate("/admin/dashboard");
     } catch (err) {
       setError(

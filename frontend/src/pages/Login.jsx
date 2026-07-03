@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+//import { useAuth } from "../context/AuthContext.jsx";
 import {
   Mail,
   Lock,
@@ -10,9 +10,11 @@ import {
   ShieldCheck,
   ArrowRight,
 } from "lucide-react";
+import { handleSignIn } from "../context/auth.js";
+
 
 export default function Login() {
-  const { loginStudent } = useAuth();
+  //const { loginStudent } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -31,7 +33,9 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await loginStudent(form.email, form.password);
+      //await loginStudent(form.email, form.password);
+      const { error, data } = await handleSignIn(form.email, form.password); // Call the Supabase sign-in function
+      if (error) return console.error(error); // Handle any errors from Supabase
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+// import { useAuth } from "../context/AuthContext.jsx";
 import {
   User,
   Mail,
@@ -12,9 +12,10 @@ import {
   CheckCircle,
   ArrowRight,
 } from "lucide-react";
+import { handleSignUp, handleSignOut } from "../context/auth.js";
 
 export default function Register() {
-  const { registerStudent } = useAuth();
+  //const { registerStudent } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -42,7 +43,9 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await registerStudent(form);
+      //await registerStudent(form);
+      const {error, data} = await handleSignUp(form.email, form.password); // Call the Supabase sign-up function
+      if (error) return console.error(error); // Handle any errors from Supabase
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
