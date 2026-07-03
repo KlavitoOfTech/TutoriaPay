@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+//import { useAuth } from "../context/AuthContext.jsx";
+import { handleSignIn } from "../context/auth.js";
 
 export default function Login() {
-  const { loginStudent } = useAuth();
+  //const { loginStudent } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -14,9 +15,12 @@ export default function Login() {
     setError("");
     setLoading(true);
     try {
-      await loginStudent(form.email, form.password);
+      //await loginStudent(form.email, form.password);
+      const { error, data } = await handleSignIn(form.email, form.password); // Call the Supabase sign-in function
+      if (error) return console.error(error); // Handle any errors from Supabase
       navigate("/dashboard");
     } catch (err) {
+      console.error(err);
       setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);

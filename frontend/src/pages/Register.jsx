@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext.jsx";
+//import { useAuth } from "../context/AuthContext.jsx";
+import { handleSignUp, handleSignOut } from "../context/auth.js";
 
 export default function Register() {
-  const { registerStudent } = useAuth();
+  //const { registerStudent } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ full_name: "", email: "", phone: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "", full_name: "", phone: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,9 +19,15 @@ export default function Register() {
     setError("");
     setLoading(true);
     try {
-      await registerStudent(form);
+      const email = form.email;
+      const password = form.password;
+      //await registerStudent(form);
+      const {error, data} = await handleSignUp(email, password); // Call the Supabase sign-up function
+      
+      if (error) return console.error(error); // Handle any errors from Supabase
       navigate("/dashboard");
     } catch (err) {
+      console.error(err);
       setError(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);

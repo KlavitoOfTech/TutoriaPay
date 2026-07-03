@@ -21,22 +21,24 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/courses" element={<Courses />} />
-        <Route
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        {/* <Route
           path="/dashboard"
           element={
             <ProtectedRoute role="student">
               <Dashboard />
             </ProtectedRoute>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/admin/dashboard"
           element={
             <ProtectedRoute role="admin">
               <AdminDashboard />
             </ProtectedRoute>
           }
-        />
+        /> */}
       </Routes>
     </div>
   );

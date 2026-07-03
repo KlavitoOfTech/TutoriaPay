@@ -6,17 +6,17 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    loadDashboard();
-  }, []);
+  // useEffect(() => {
+  //   loadDashboard();
+  // }, []);
 
-  function loadDashboard() {
-    setLoading(true);
-    api
-      .get("/students/me/dashboard")
-      .then((res) => setData(res.data))
-      .finally(() => setLoading(false));
-  }
+  // function loadDashboard() {
+  //   setLoading(true);
+  //   api
+  //     .get("/students/me/dashboard")
+  //     .then((res) => setData(res.data))
+  //     .finally(() => setLoading(false));
+  // }
 
   async function handlePay(enrollment) {
     setMessage("");
@@ -32,7 +32,7 @@ export default function Dashboard() {
     }
   }
 
-  if (loading) return <p className="text-center py-16">Loading dashboard...</p>;
+  //if (loading) return <p className="text-center py-16">Loading dashboard...</p>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
