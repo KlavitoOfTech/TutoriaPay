@@ -1,11 +1,13 @@
 import config from './config/env.config.js';
 import app from './app.js';
 import query from './config/db.config.js';
+import { createSchema } from './models/schema.models.js';
 
 const {PORT} = config;
 
 async function startServer() {
     try {
+        await createSchema();
         const res = await query('SELECT NOW()');
         console.log(`🚀 Database connection successful! Server time: ${res.rows[0].now}`);
 
