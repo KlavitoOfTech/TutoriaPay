@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import api from "../api/axios.js";
 // import { useAuth } from "../context/AuthContext.jsx";
 import {
   User,
@@ -44,11 +45,13 @@ export default function Register() {
 
     try {
       //await registerStudent(form);
-      const {error, data} = await handleSignUp(form.email, form.password); // Call the Supabase sign-up function
+      const {error, data} = await handleSignUp(form); // Call the Supabase sign-up function
       if (error) return console.error(error); // Handle any errors from Supabase
+      const response = await api.post('/auth/register/student', form);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message);
+      console.error(err);
     } finally {
       setLoading(false);
     }

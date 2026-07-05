@@ -4,17 +4,17 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-const handleSignUp = async (email, password) => {
+const handleSignUp = async (studentData) => {
     const { data, error } = await supabase.auth.signUp({
-        email,
-        password
+        email: studentData.email,
+        password: studentData.password
     })
     return { data, error }
 }
-const handleSignIn = async (email, password) => {
+const handleSignIn = async (studentData) => {
     const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
+        email: studentData.email,
+        password: studentData.password
     })
     return { data, error }
 }
@@ -30,4 +30,4 @@ const getCurrentUser = async () => {
         console.log('User signed out')
     }}
 
-export { handleSignUp, handleSignIn, handleSignOut, getCurrentUser }
+export { supabase, handleSignUp, handleSignIn, handleSignOut, getCurrentUser }

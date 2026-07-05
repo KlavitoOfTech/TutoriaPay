@@ -1,4 +1,4 @@
-import {addStudent, listStudents, fetchStudentById} from '../models/student.models.js'
+import {addStudent, listStudents, fetchStudentById} from '../models/student.model.js'
 
 const getStudents = async (req, res) => {
     try{

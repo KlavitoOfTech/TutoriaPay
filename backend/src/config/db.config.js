@@ -4,7 +4,7 @@ import pg from 'pg';
 const { Pool } = pg;
 
 const pool = new Pool({
-    connectionString: config.DB_URL,
+    connectionString: config.SUPABASE_CONNECTION_STRING,
     ssl: false
 });
 
