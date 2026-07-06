@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 import {
   Menu,
   X,
@@ -48,44 +49,46 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Menu */}
           <nav className="hidden md:flex items-center gap-8">
 
-            <Link
-              to="/"
-              className="font-medium text-slate-600 transition hover:text-emerald-600"
-            >
-              Home
-            </Link>
-
-            <Link
-              to="/courses"
-              className="font-medium text-slate-600 transition hover:text-emerald-600"
-            >
-              Courses
-            </Link>
-
-            <a
-              href="#features"
-              className="font-medium text-slate-600 transition hover:text-emerald-600"
-            >
-              Features
-            </a>
-
-            <a
-              href="#about"
-              className="font-medium text-slate-600 transition hover:text-emerald-600"
-            >
-              About
-            </a>
-
-            {!user && (
+            {!user ? (
               <>
+                <HashLink
+                  smooth
+                  to="/#hero"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  Home
+                </HashLink>
+
+                <Link
+                  to="/courses"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  Courses
+                </Link>
+
+                <HashLink
+                  smooth
+                  to="/#features"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  Features
+                </HashLink>
+
+                <HashLink
+                  smooth
+                  to="/#cta"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  About
+                </HashLink>
+
                 <Link
                   to="/login"
                   className="rounded-xl px-5 py-2 font-medium text-slate-700 transition hover:bg-slate-100"
                 >
-                  Student Login
+                  Student
                 </Link>
 
                 <Link
@@ -102,54 +105,32 @@ export default function Navbar() {
                   Get Started
                 </Link>
               </>
-            )}
-
-            {user && (
+            ) : (
               <>
-                <div className="flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-2">
+                <Link
+                  to="/"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  Home
+                </Link>
 
-                  <UserCircle
-                    size={22}
-                    className="text-emerald-600"
-                  />
+                <Link
+                  to="/courses"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  Courses
+                </Link>
 
-                  <div>
-
-                    <p className="text-sm font-semibold text-slate-800">
-                      {user.full_name || user.email}
-                    </p>
-
-                    <p className="text-xs capitalize text-slate-500">
-                      {user.role}
-                    </p>
-
-                  </div>
-
-                </div>
-
-                {user.role === "student" && (
-                  <Link
-                    to="/dashboard"
-                    className="flex items-center gap-2 rounded-xl border px-4 py-2 font-medium text-slate-700 transition hover:border-emerald-500 hover:text-emerald-600"
-                  >
-                    <LayoutDashboard size={18} />
-                    Dashboard
-                  </Link>
-                )}
-
-                {user.role === "admin" && (
-                  <Link
-                    to="/admin/dashboard"
-                    className="flex items-center gap-2 rounded-xl border px-4 py-2 font-medium text-slate-700 transition hover:border-emerald-500 hover:text-emerald-600"
-                  >
-                    <LayoutDashboard size={18} />
-                    Dashboard
-                  </Link>
-                )}
+                <Link
+                  to="/payment"
+                  className="font-medium text-slate-600 transition hover:text-emerald-600"
+                >
+                  Payment
+                </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-2 font-medium text-red-600 transition hover:bg-red-100"
+                  className="flex items-center gap-2 rounded-xl bg-red-50 px-5 py-2 font-medium text-red-600 transition hover:bg-red-100"
                 >
                   <LogOut size={18} />
                   Logout
@@ -221,25 +202,29 @@ export default function Navbar() {
 
               {user && (
                 <>
-                  {user.role === "student" && (
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setMobileOpen(false)}
-                      className="rounded-lg px-4 py-3 hover:bg-slate-100"
-                    >
-                      Dashboard
-                    </Link>
-                  )}
+                  <Link
+                    to="/"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    Home
+                  </Link>
 
-                  {user.role === "admin" && (
-                    <Link
-                      to="/admin/dashboard"
-                      onClick={() => setMobileOpen(false)}
-                      className="rounded-lg px-4 py-3 hover:bg-slate-100"
-                    >
-                      Admin Dashboard
-                    </Link>
-                  )}
+                  <Link
+                    to="/courses"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    Courses
+                  </Link>
+
+                  <Link
+                    to="/payment"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    Payment
+                  </Link>
 
                   <button
                     onClick={handleLogout}
