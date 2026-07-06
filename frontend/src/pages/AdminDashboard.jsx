@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api/axios.js";
 
 export default function AdminDashboard() {
+  const navigate = useNavigate();
   const [tab, setTab] = useState("courses");
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
@@ -9,28 +11,47 @@ export default function AdminDashboard() {
   const [payments, setPayments] = useState([]);
   const [form, setForm] = useState({ title: "", description: "", price: "", duration_weeks: "" });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    refreshAll();
+    loadDashboard();
   }, []);
 
+  async function loadDashboard() {
+    setLoading(true);
+    try {
+      const res = await api.get('/admin/login');
+      refreshAll();
+    } catch (error) {
+      console.error("Error loading dashboard:", error.response?.data?.message || error.message);
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  }
+  
   function refreshAll() {
     api.get("/courses").then((r) => setCourses(r.data));
     api.get("/students").then((r) => setStudents(r.data));
-    api.get("/enrollments").then((r) => setEnrollments(r.data));
-    api.get("/payments").then((r) => setPayments(r.data));
+    // api.get("/enrollments").then((r) => setEnrollments(r.data));
+    // api.get("/payments").then((r) => setPayments(r.data));
   }
 
   async function handleCreateCourse(e) {
     e.preventDefault();
     setMessage("");
     try {
-      await api.post("/courses", { ...form, price: Number(form.price), duration_weeks: form.duration_weeks ? Number(form.duration_weeks) : null });
+      const response = await api.post('/courses', 
+        { ...form, 
+          price: Number(form.price), 
+          duration_weeks: form.duration_weeks ? Number(form.duration_weeks) : null 
+        });
       setForm({ title: "", description: "", price: "", duration_weeks: "" });
       setMessage("Course created.");
       refreshAll();
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to create course");
+      console.error(err);
     }
   }
 
@@ -52,6 +73,15 @@ export default function AdminDashboard() {
     { id: "payments", label: "Payments" },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <p className="text-slate-500 text-lg">
+          Loading Dashboard...
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <h2 className="text-2xl font-bold mb-6 text-gray-900">Admin Dashboard</h2>

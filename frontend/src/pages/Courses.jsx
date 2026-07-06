@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 export default function Courses() {
-  const { user } = useAuth();
+  //const { user } = useAuth();
 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,16 +34,14 @@ export default function Courses() {
   async function handleEnroll(courseId) {
     setMessage("");
 
-    if (!user || user.role !== "student") {
-      setMessage("Please login as a student to enroll.");
-      return;
-    }
-
+    // if (!user || user.role !== "student") {
+    //   setMessage("Please login as a student to enroll.");
+    //   return;
+    // }
     try {
-      await api.post("/enrollments", {
+      const res = await api.post("/enrollments", {
         course_id: courseId,
       });
-
       setMessage(
         "Enrollment successful! Visit your dashboard to complete payment."
       );

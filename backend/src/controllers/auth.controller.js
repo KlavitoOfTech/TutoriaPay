@@ -17,4 +17,12 @@ const registerStudent = async (req, res) => {
     }
 }
 
-export { registerStudent };
+const loginAdmin = async (req, res) => {
+    try {
+        // If the user is authenticated and authorized, send a success response
+        res.status(200).json({ message: 'Admin login successful' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error logging in as admin' });
+    }
+}
+export { registerStudent, loginAdmin };

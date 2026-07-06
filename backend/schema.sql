@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS courses (
     id SERIAL PRIMARY KEY,
     title VARCHAR(150) NOT NULL UNIQUE,
     description TEXT,
-    course_fee DECIMAL(12, 2) NOT NULL CHECK (course_fee >= 0),
+    price DECIMAL(12, 2) NOT NULL CHECK (price >= 0),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );

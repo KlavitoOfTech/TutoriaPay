@@ -41,7 +41,7 @@ export default function AdminLogin() {
 
     try {
       //await loginAdmin(form.email, form.password);
-      const { error, data } = await handleSignIn(form.email, form.password); // Call the Supabase sign-in function
+      const { error, data } = await handleSignIn(form); // Call the Supabase sign-in function
       if (error) return console.error(error); // Handle any errors from Supabase
       navigate("/admin/dashboard");
     } catch (err) {

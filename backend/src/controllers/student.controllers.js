@@ -1,12 +1,12 @@
 import {addStudent, listStudents, fetchStudentById} from '../models/student.model.js'
 
-const getStudents = async (req, res) => {
+const fetchStudents = async (req, res) => {
     try{
-        const students = await listStudents()
-        res.json(students)
+        const students = await listStudents();
+        res.status(200).json(students);
     }
     catch (error) {
-
+        res.status(500).json({ message: 'Error fetching students' });
     }
 }
 const getStudentById = async (req, res) => {
@@ -43,4 +43,4 @@ const deleteStudent = async (req, res) => {
     }
 }
 
-export { getStudents, getStudentById, updateStudent, deleteStudent };
+export { fetchStudents, getStudentById, updateStudent, deleteStudent };

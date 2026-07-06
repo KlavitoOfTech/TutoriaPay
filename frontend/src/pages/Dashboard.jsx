@@ -29,9 +29,8 @@ export default function Dashboard() {
     setLoading(true);
 
     try {
-      const studentId = ''; // Replace with the actual student ID, possibly from context or props
       const res = await api.get(`/students/me/dashboard`);
-      console.log("Dashboard data:", res.data);
+      // console.log("Dashboard data:", res.data);
       // setData(res.data);
     } 
     catch (error) {
