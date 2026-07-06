@@ -1,35 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import {
   Menu,
   X,
   GraduationCap,
-  LayoutDashboard,
-  UserCircle,
   LogOut,
 } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+
+import {
+  supabase,
+  handleSignOut,
+} from "../context/auth";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
-  function handleLogout() {
-    logout();
+  useEffect(() => {
+    // Load current user
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+    });
+
+    // Listen for login/logout
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function handleLogout() {
+    await handleSignOut();
+
+    setUser(null);
+
     navigate("/");
+
     setMobileOpen(false);
   }
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-lg">
-      <div className="max-w-7xl mx-auto">
-
+      <div className="mx-auto max-w-7xl">
         <div className="flex items-center justify-between px-6 py-4">
 
           {/* Logo */}
+
           <Link
             to="/"
             className="flex items-center gap-3"
@@ -49,7 +71,9 @@ export default function Navbar() {
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Menu */}
+
+          <nav className="hidden items-center gap-8 md:flex">
 
             {!user ? (
               <>
@@ -78,7 +102,7 @@ export default function Navbar() {
 
                 <HashLink
                   smooth
-                  to="/#cta"
+                  to="/#about"
                   className="font-medium text-slate-600 transition hover:text-emerald-600"
                 >
                   About
@@ -141,9 +165,10 @@ export default function Navbar() {
           </nav>
 
           {/* Mobile Button */}
+
           <button
-            className="rounded-lg p-2 md:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
+            className="rounded-lg p-2 md:hidden"
           >
             {mobileOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -151,29 +176,48 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
+
         {mobileOpen && (
           <div className="border-t bg-white md:hidden">
-
             <div className="flex flex-col gap-2 p-6">
 
-              <Link
-                to="/"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-4 py-3 hover:bg-slate-100"
-              >
-                Home
-              </Link>
-
-              <Link
-                to="/courses"
-                onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-4 py-3 hover:bg-slate-100"
-              >
-                Courses
-              </Link>
-
-              {!user && (
+              {!user ? (
                 <>
+                  <HashLink
+                    smooth
+                    to="/#hero"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    Home
+                  </HashLink>
+
+                  <Link
+                    to="/courses"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    Courses
+                  </Link>
+
+                  <HashLink
+                    smooth
+                    to="/#features"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    Features
+                  </HashLink>
+
+                  <HashLink
+                    smooth
+                    to="/#about"
+                    onClick={() => setMobileOpen(false)}
+                    className="rounded-lg px-4 py-3 hover:bg-slate-100"
+                  >
+                    About
+                  </HashLink>
+
                   <Link
                     to="/login"
                     onClick={() => setMobileOpen(false)}
@@ -198,9 +242,7 @@ export default function Navbar() {
                     Register
                   </Link>
                 </>
-              )}
-
-              {user && (
+              ) : (
                 <>
                   <Link
                     to="/"
@@ -236,10 +278,8 @@ export default function Navbar() {
               )}
 
             </div>
-
           </div>
         )}
-
       </div>
     </header>
   );

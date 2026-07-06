@@ -15,8 +15,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 
 // Future Pages
-// import PaymentHistory from "./pages/PaymentHistory";
-// import Profile from "./pages/Profile";
+import PaymentHistory from "./pages/PaymentHistory";
+import Profile from "./pages/Profile";
 // import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -45,18 +45,14 @@ export default function App() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute role="student">
                 <Dashboard />
-              </ProtectedRoute>
             }
           />
 
           <Route
             path="/payment"
             element={
-              <ProtectedRoute role="student">
-                <Payment />
-              </ProtectedRoute>
+              <Payment />
             }
           />
 
@@ -65,38 +61,32 @@ export default function App() {
           <Route
             path="/admin/dashboard"
             element={
-              <ProtectedRoute role="admin">
                 <AdminDashboard />
-              </ProtectedRoute>
             }
           />
 
           {/* ================= FUTURE ROUTES ================= */}
 
-          {/*
+          
           <Route
             path="/payments"
             element={
-              <ProtectedRoute role="student">
                 <PaymentHistory />
-              </ProtectedRoute>
             }
           />
 
           <Route
             path="/profile"
             element={
-              <ProtectedRoute role="student">
                 <Profile />
-              </ProtectedRoute>
             }
           />
 
-          <Route
+          {/* <Route
             path="*"
             element={<NotFound />}
-          />
-          */}
+          /> */}
+         
         </Routes>
       </main>
     </div>
