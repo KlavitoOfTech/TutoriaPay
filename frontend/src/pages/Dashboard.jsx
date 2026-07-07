@@ -30,8 +30,8 @@ export default function Dashboard() {
 
     try {
       const res = await api.get(`/students/me/dashboard`);
-      // console.log("Dashboard data:", res.data);
-      // setData(res.data);
+       //console.log("Dashboard data:", res.data);
+       //setData(res.data);
     } 
     catch (error) {
       console.error("Error loading dashboard:", error.res?.data?.message || error.message);

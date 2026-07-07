@@ -29,12 +29,12 @@ export default function Payment() {
     setLoading(true);
 
     try {
-      const [studentRes, paymentRes] = await Promise.all([
-        api.get("/students/me"),
-        api.get("/students/me/pending-payments"),
+      const [paymentRes, /*studentRes*/] = await Promise.all([
+        api.get("/payments/me"), // make get request to payment api endpoint
+        //api.get("/payments/me/invoice"),
       ]);
-
-      setStudent(studentRes.data);
+      //console.log(studentRes)
+      //setStudent(studentRes.data);
       setPayments(paymentRes.data || []);
     } catch (error) {
       console.error(error);
@@ -295,7 +295,7 @@ export default function Payment() {
                               <BookOpen className="text-emerald-600" />
 
                               <h3 className="text-xl font-bold">
-                                {payment.course}
+                                {payment.title}
                               </h3>
 
                             </div>
@@ -312,7 +312,7 @@ export default function Payment() {
                               <p className="text-slate-500">
                                 Amount:
                                 <span className="ml-2 font-bold text-emerald-600">
-                                  ₦{Number(payment.amount).toLocaleString()}
+                                  ₦{Number(payment.price).toLocaleString()}
                                 </span>
                               </p>
 
