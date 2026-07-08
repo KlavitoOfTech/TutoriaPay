@@ -48,7 +48,7 @@ export default function Register() {
       const {error, data} = await handleSignUp(form); // Call the Supabase sign-up function
       if (error) return console.error(error); // Handle any errors from Supabase
 
-      const response = await api.post('/auth/student/register', form);
+      //const response = await api.post('/auth/student/register', form);
       navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message);
