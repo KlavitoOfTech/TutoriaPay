@@ -25,8 +25,8 @@ const fetchStudentDashboardInformation = async (studentId) => {
             student: studentRes,
             enrollment: enrollmentRes,
             payments: {
-                totalFee: invoiceRes.expected_amount,
-                totalPaid: invoiceRes.amount_paid,
+                totalFee: Number(invoiceRes.expected_amount),
+                totalPaid: Number(invoiceRes.amount_paid),
                 outstanding: outstandingFee,
                 wallet: walletBalance || 0.00
             }

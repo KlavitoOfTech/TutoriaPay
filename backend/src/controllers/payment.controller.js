@@ -22,8 +22,7 @@ const getPaymentInvoice = async(req, res) => {
         if (!studentId) {
             return res.status(400).json({ message: 'Student ID is required' });
         };
-        const amount = 1000 //placeholder for expectedamount
-        const invoiceRes = await fetchPaymentInvoice(studentId, amount)
+        const invoiceRes = await fetchPaymentInvoice(studentId)
         if (!invoiceRes) {
             return res.status(404).json({ message: 'invoice not found' });
         };

@@ -15,4 +15,13 @@ const getStudentEnrollments = async (studentId) => {
     return res.rows;
 }
 
-export { enrollStudentInCourse, getStudentEnrollments };
+const getCourseEnrollment = async (studentId, courseId) => {
+    const queryText = `SELECT title, price 
+        FROM enrollments 
+        JOIN courses ON enrollments.course_id = courses.id 
+        WHERE student_id = $1 AND course_id = $2`
+    const res = await query(queryText, [studentId, courseId])
+    return res.rows[0];
+}
+
+export { enrollStudentInCourse, getStudentEnrollments, getCourseEnrollment };
