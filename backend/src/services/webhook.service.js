@@ -1,4 +1,4 @@
-import { fetchInvoice, updateInvoice, updatewallet, fetchVirtualAccount, addWallet, fetchPayment, fetchWallet } from "../models/payment.model.js";
+import { fetchInvoice, updateInvoice, updatewallet, fetchVirtualAccount, addWallet, fetchPayment, fetchWallet, addPayment } from "../models/payment.model.js";
 
 const reconcilePayment = async (payloadData) => {
     try {
@@ -17,6 +17,7 @@ const reconcilePayment = async (payloadData) => {
             await handleOverpayment(studentId, transactionAmount)
             return;
         }
+        await addPayment(invoiceRes.id, transactionAmount, transactionId, payloadData)
         const totalPaid = Number(invoiceRes.amount_paid) + Number(transactionAmount);
         const amountLeft = Number(invoiceRes.expected_amount) - Number(totalPaid);
         if (amountLeft == 0) {

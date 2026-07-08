@@ -51,11 +51,6 @@ export default function Payment() {
     setMessage("");
   }
 
-  // const totalOutstanding = enrollments.price.reduce(
-  //   (sum, item) => sum + Number(item.amount),
-  //   0
-  // );  TO BE CALCULATED IN BACKEND
-
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -71,19 +66,6 @@ export default function Payment() {
     <div className="min-h-screen bg-slate-50">
 
       <div className="mx-auto max-w-7xl px-6 py-10">
-
-        <div className="mb-10 text-center">
-
-          <h1 className="text-4xl font-extrabold text-slate-900">
-            Payment Center
-          </h1>
-
-          <p className="mt-2 text-slate-600">
-            Complete payment for your enrolled courses.
-          </p>
-
-        </div>
-
         {message && (
           <div className="mb-8 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">
             {message}
@@ -130,19 +112,7 @@ export default function Payment() {
                       </h2>
 
                       <p className="mt-2 text-slate-500">
-                        Complete payment to activate your enrolled courses.
-                      </p>
-
-                    </div>
-
-                    <div className="mx-auto mt-6 w-fit rounded-xl bg-red-50 px-6 py-4">
-
-                      <p className="text-sm text-slate-500">
-                        Outstanding
-                      </p>
-
-                      <p className="text-3xl font-bold text-red-600">
-                        {/* ₦{totalOutstanding.toLocaleString()} */}
+                        Click Pay Now to Complete your payment.
                       </p>
 
                     </div>
@@ -207,29 +177,30 @@ export default function Payment() {
                     ))}
 
                   </div>
-                  <button
-                    disabled={processing === true}
-                    onClick={() => handlePayment()}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
-                  >
+                  <div className="flex justify-center p-4">
+                    <button
+                      disabled={processing === true}
+                      onClick={() => handlePayment()}
+                      className="flex min-w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
+                    >
 
-                    {processing === true ? (
-                      <>
-                        <Loader2
-                          size={18}
-                          className="animate-spin"
-                        />
-                        Processing...
-                      </>
-                    ) : (
-                      <>
-                        Pay Now
-                        <ArrowRight size={18} />
-                      </>
-                    )}
+                      {processing === true ? (
+                        <>
+                          <Loader2
+                            size={18}
+                            className="animate-spin"
+                          />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          Pay Now
+                          <ArrowRight size={18} />
+                        </>
+                      )}
 
-                  </button>
-
+                    </button>
+                  </div>
                 </div>
 
                 <div className="mt-8 rounded-3xl bg-white p-8 shadow">

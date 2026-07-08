@@ -273,18 +273,14 @@ export default function PaymentInvoice() {
 
           </div>
                     {/* Actions */}
-
-          <div className="mt-10 flex flex-col gap-4 border-t pt-8 md:flex-row md:items-center md:justify-between">
-
-            <div className="flex gap-4">
-
+            <div className="flex justify-center p-4">
               <button
                 disabled={
                   processing ||
                   invoice.status === "paid"
                 }
                 onClick={confirmPayment}
-                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex min-w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
               >
 
                 {processing ? (
@@ -307,17 +303,11 @@ export default function PaymentInvoice() {
 
                   <>
                     I Have Paid Already
-
-                    {/* <CreditCard size={18} /> */}
                   </>
 
                 )}
-
               </button>
-
             </div>
-
-          </div>
 
         </div>
 
@@ -328,127 +318,3 @@ export default function PaymentInvoice() {
   );
 
 }
-
-/*
-=========================================================
-BACKEND API CONTRACT
-=========================================================
-
-1. GET INVOICE
-
-GET /payments/:paymentId
-
-Response
-
-{
-  "id": 15,
-
-  "invoice_no": "INV-20260707-00015",
-
-  "invoice_date": "2026-07-07",
-
-  "due_date": "2026-07-14",
-
-  "currency": "NGN",
-
-  "amount": 50000,
-
-  "status": "pending",
-
-  "student": {
-      "id": 4,
-      "full_name": "John Doe",
-      "email": "john@example.com",
-      "phone": "+2348012345678"
-  },
-
-  "course": {
-      "id": 10,
-      "title": "Frontend Development",
-      "duration": "12 Weeks",
-      "instructor": "Jane Smith"
-  }
-}
-
-=========================================================
-
-2. START PAYMENT
-
-POST /payments/:paymentId/pay
-
-Response
-
-{
-    "payment_url":
-    "https://checkout.paystack.com/xxxxx"
-}
-
-OR
-
-{
-    "status":"paid"
-}
-
-=========================================================
-
-3. PAYMENT CALLBACK
-
-POST /payments/webhook
-
-Backend updates payment
-
-↓
-
-Payment status becomes
-
-Paid
-
-↓
-
-Dashboard payment history updates
-
-↓
-
-Student dashboard refreshes
-
-=========================================================
-
-RECOMMENDED FLOW
-
-Dashboard
-
-↓
-
-Courses
-
-↓
-
-Enroll
-
-↓
-
-Payment Page
-(list pending payments)
-
-↓
-
-Payment Invoice
-
-↓
-
-Proceed To Payment
-
-↓
-
-Payment Gateway
-
-↓
-
-Backend Callback
-
-↓
-
-Dashboard
-
-=========================================================
-*/
