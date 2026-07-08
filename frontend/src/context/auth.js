@@ -7,7 +7,15 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const handleSignUp = async (studentData) => {
     const { data, error } = await supabase.auth.signUp({
         email: studentData.email,
-        password: studentData.password
+        password: studentData.password,
+        options: {
+            data: {
+                full_name: studentData.full_name,
+                email: studentData.email,
+                phone: studentData.phone,
+                role: 'student'
+            }
+        }
     })
     return { data, error }
 }
