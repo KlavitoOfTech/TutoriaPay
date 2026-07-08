@@ -2,12 +2,13 @@ import { fetchInvoice, updateInvoice, updatewallet, fetchVirtualAccount, addWall
 
 const reconcilePayment = async (payloadData) => {
     try {
-        const {transactionId, transactionAmount, accountReference} = payloadData;     
+        const {transaction} = payloadData;
+        const { transactionId, transactionAmount, aliasAccountReference } = transaction   
         const paymentRes = await fetchPayment(transactionId); // checks for duplicate payment
         if (paymentRes) {
             return;
         }
-        const virtualAccountRes = fetchVirtualAccount(accountReference);
+        const virtualAccountRes = fetchVirtualAccount(aliasAccountReference);
         if (!virtualAccountRes) {
             throw new Error('Anonymous payment detected');
         };
@@ -22,18 +23,18 @@ const reconcilePayment = async (payloadData) => {
         const amountLeft = Number(invoiceRes.expected_amount) - Number(totalPaid);
         if (amountLeft == 0) {
             const status = 'Paid'
-            await updateInvoice(totalPaid, status, accountReference);
+            await updateInvoice(totalPaid, status, aliasAccountReference);
             return;
         }
         if (amountLeft < 0) {
             const status = 'Paid'
             const balance = Number(totalPaid) - Number(invoiceRes.expected_amount)
             await handleOverpayment (studentId, balance)
-            await updateInvoice(totalPaid, status, accountReference);
+            await updateInvoice(totalPaid, status, aliasAccountReference);
             return;
         }
         const status = 'Partially paid'
-        await updateInvoice(totalPaid, status, accountReference);
+        await updateInvoice(totalPaid, status, aliasAccountReference);
     } 
     catch (error) {
         console.error(error.response?.data || error.message);
