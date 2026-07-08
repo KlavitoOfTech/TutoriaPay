@@ -43,6 +43,13 @@ const updateInvoice = async (amountPaid, status, accountRef) => {
     const res = await query(queryText, [amountPaid, status, accountRef]);
 }
 
+const updateInvoiceAmount =  async (newAmount, studentId) => {
+    const queryText = `UPDATE invoices 
+        SET expected_amount = $1 
+        WHERE student_id = $2`;
+    const res = await query(queryText, [newAmount, studentId]);
+}
+
 const addPayment = async (invoiceId, amountReceived, paymentRef, webhookPayload) => {
     const queryText = `INSERT INTO 
         payments (invoice_id, amount_received, payment_ref, raw_webhook_payload)
@@ -75,4 +82,4 @@ const fetchWallet = async (studentId) => {
     const res = await query(queryText, [studentId]);
     return res.rows[0];
 }
-export { addVirtualAccount, addInvoice, fetchInvoice, fetchInvoiceAndVa, fetchVirtualAccount, updateInvoice, addPayment, fetchPayment, addWallet, updatewallet, fetchWallet }
+export { updateInvoiceAmount, addVirtualAccount, addInvoice, fetchInvoice, fetchInvoiceAndVa, fetchVirtualAccount, updateInvoice, addPayment, fetchPayment, addWallet, updatewallet, fetchWallet }

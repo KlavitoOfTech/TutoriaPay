@@ -14,12 +14,12 @@ const fetchStudentEnrollmentsById = async (studentId) => {
     }
 }
 
-const fetchPaymentInvoice = async (studentId, expectedAmount) => {
+const fetchPaymentInvoice = async (studentId) => {
     try {
         const invoiceRes = await fetchInvoiceAndVa(studentId); // fetch all the details to be on the invoice from student invoice and VA data
         if (!invoiceRes) {
-            const invoiceData = await generateInvoice(studentId, expectedAmount) // generate invoice and VA if non exists for the student
-            return invoiceData
+            const invoiceData = await generateInvoice(studentId) // generate invoice and VA if non exists for the student
+            return //invoiceData
         }
         //console.log(invoiceRes)
         return invoiceRes;
@@ -28,10 +28,10 @@ const fetchPaymentInvoice = async (studentId, expectedAmount) => {
     }
 }
 
-const generateInvoice = async (studentId, expectedAmount) => {
+const generateInvoice = async (studentId) => {
     try {
         const studentRes = await fetchStudentById(studentId); // fetch student data
-        await addInvoice(studentId, expectedAmount); // add student invoice details to database
+        //await addInvoice(studentId, expectedAmount); // add student invoice details to database
         const invoiceRes = await fetchInvoice(studentId); // fetch only invoice data to be used in VA creation
         const vaRes = await createVirtualAccount (invoiceRes.account_ref, studentRes.full_name); // create nomba virtual account
         await addVirtualAccount(studentId, vaRes); // Add VA data to the database

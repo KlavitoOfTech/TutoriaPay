@@ -13,10 +13,7 @@ import {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    enrollments: [],
-    payments: [],
-  });
+  const [data, setData] = useState({});
 
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -27,11 +24,10 @@ export default function Dashboard() {
 
   async function loadDashboard() {
     setLoading(true);
-
     try {
       const res = await api.get(`/students/me/dashboard`);
        //console.log("Dashboard data:", res.data);
-       //setData(res.data);
+       setData(res.data);
     } 
     catch (error) {
       console.error("Error loading dashboard:", error.res?.data?.message || error.message);
@@ -42,46 +38,8 @@ export default function Dashboard() {
     }
   }
 
-  async function handlePay(enrollment) {
-    setMessage("");
-
-    try {
-      await api.post("/payments", {
-        enrollment_id: enrollment.id,
-        amount: enrollment.price,
-      });
-
-      setMessage(
-        "Payment initiated successfully. Awaiting confirmation."
-      );
-
-      loadDashboard();
-    } catch (err) {
-      setMessage(
-        err.response?.data?.message ||
-          "Unable to initiate payment."
-      );
-    }
-  }
-
-  const totalFees = useMemo(
-    () =>
-      data.enrollments.reduce(
-        (sum, item) => sum + Number(item.price),
-        0
-      ),
-    [data]
-  );
-
-  const totalPaid = useMemo(
-    () =>
-      data.payments
-        .filter((p) => p.status === "paid")
-        .reduce((sum, p) => sum + Number(p.amount), 0),
-    [data]
-  );
-
-  const balance = totalFees - totalPaid;
+  const enrollment = data.enrollment
+  const payments = data.payments
 
   if (loading) {
     return (
@@ -101,11 +59,11 @@ export default function Dashboard() {
         <div className="mb-10">
 
           <h1 className="text-4xl font-extrabold text-slate-900">
-            Welcome back, {data.full_name}
+            Welcome back, {data.student.full_name}
           </h1>
 
           <p className="mt-2 text-slate-600">
-            Welcome back. Manage your learning and payments.
+            Manage your tutorial resources and payments.
           </p>
 
         </div>
@@ -131,7 +89,7 @@ export default function Dashboard() {
                 </p>
 
                 <h2 className="mt-2 text-3xl font-bold">
-                  ₦{totalFees.toLocaleString()}
+                  ₦{payments.totalFee.toLocaleString()}
                 </h2>
 
               </div>
@@ -151,11 +109,11 @@ export default function Dashboard() {
               <div>
 
                 <p className="text-sm text-slate-500">
-                  Paid
+                  Amount Paid
                 </p>
 
                 <h2 className="mt-2 text-3xl font-bold text-emerald-600">
-                  ₦{totalPaid.toLocaleString()}
+                  ₦{payments.totalPaid.toLocaleString()}
                 </h2>
 
               </div>
@@ -175,11 +133,11 @@ export default function Dashboard() {
               <div>
 
                 <p className="text-sm text-slate-500">
-                  Outstanding
+                  Outstanding Fee
                 </p>
 
                 <h2 className="mt-2 text-3xl font-bold text-red-500">
-                  ₦{balance.toLocaleString()}
+                  ₦{payments.outstanding.toLocaleString()}
                 </h2>
 
               </div>
@@ -199,11 +157,11 @@ export default function Dashboard() {
               <div>
 
                 <p className="text-sm text-slate-500">
-                  Courses
+                  Wallet Balance
                 </p>
 
                 <h2 className="mt-2 text-3xl font-bold">
-                  {data.enrollments.length}
+                  ₦{payments.wallet.toLocaleString()}
                 </h2>
 
               </div>
@@ -229,20 +187,20 @@ export default function Dashboard() {
             </h2>
 
             <span className="text-sm text-slate-500">
-              {data.enrollments.length} Enrolled
+              {enrollment.length} Enrolled
             </span>
 
           </div>
 
           <div className="space-y-5">
 
-            {data.enrollments.length === 0 && (
+            {enrollment.length === 0 && (
               <div className="rounded-xl bg-slate-50 p-8 text-center text-slate-500">
                 You haven't enrolled in any course yet.
               </div>
             )}
 
-            {data.enrollments.map((course) => (
+            {enrollment.map((course) => (
 
               <div
                 key={course.id}
@@ -269,21 +227,10 @@ export default function Dashboard() {
 
                 </div>
 
-                {course.status === "pending" ? (
-                  <button
-                    onClick={() => handlePay(course)}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-6 py-3 font-semibold text-white transition hover:bg-emerald-600"
-                  >
-                    Pay Now
-                    <ArrowRight size={18} />
-                  </button>
-                ) : (
-                  <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-5 py-3 text-emerald-700">
+                  {/* <div className="flex items-center gap-2 rounded-xl bg-emerald-50 px-5 py-3 text-emerald-700">
                     <CheckCircle2 size={18} />
                     Payment Completed
-                  </div>
-                )}
-
+                  </div> */}
               </div>
 
             ))}
@@ -331,7 +278,7 @@ export default function Dashboard() {
 
                 <tbody>
 
-                  {data.payments.map((payment) => (
+                  {/* {data.payments.map((payment) => (
 
                     <tr
                       key={payment.id}
@@ -362,7 +309,7 @@ export default function Dashboard() {
 
                     </tr>
 
-                  ))}
+                  ))} */}
 
                 </tbody>
 

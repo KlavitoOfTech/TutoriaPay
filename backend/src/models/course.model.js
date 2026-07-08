@@ -13,4 +13,10 @@ const listCourses = async () => {
     const res = await query(queryText, [])
     return res.rows
 }   
-export {addCourse, listCourses};
+
+const fetchCourse = async (courseId) => {
+    const queryText =`SELECT * FROM courses WHERE id = $1`
+    const res = await query(queryText, [courseId])
+    return res.row[0]
+}
+export {addCourse, listCourses, fetchCourse};
