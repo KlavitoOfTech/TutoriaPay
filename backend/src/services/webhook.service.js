@@ -6,10 +6,12 @@ const reconcilePayment = async (payloadData) => {
         const { transactionId, transactionAmount, aliasAccountReference } = transaction   
         const paymentRes = await fetchPayment(transactionId); // checks for duplicate payment
         if (paymentRes) {
+            console.log('Existing payment record:', paymentRes)
             return;
         }
         const virtualAccountRes = fetchVirtualAccount(aliasAccountReference);
         if (!virtualAccountRes) {
+            console.log('No virtual account detected')
             throw new Error('Anonymous payment detected');
         };
         const studentId = virtualAccountRes.studentId;
