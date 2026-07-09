@@ -29,7 +29,7 @@ export default function PaymentInvoice() {
     setLoading(true);
     try {
       const res = await api.get(`/payments/me/invoice`);
-      console.log(res.data)
+      //console.log(res.data)
       setInvoice(res.data);
     } catch (error) {
       console.error(error);
@@ -137,13 +137,13 @@ export default function PaymentInvoice() {
 
     <div className="min-h-screen bg-slate-100">
 
-      <div className="mx-auto max-w-5xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-3 py-6">
 
-        <div className="mb-10 flex items-center justify-between">
+        {/* <div className="mb-10 flex items-center justify-between"> */}
 
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 rounded-xl border bg-white px-5 py-3 hover:bg-slate-50"
+            className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 hover:bg-slate-50"
           >
 
             <ArrowLeft size={18} />
@@ -160,7 +160,7 @@ export default function PaymentInvoice() {
 
           <div />
 
-        </div>
+        {/* </div> */}
 
         {message && (
 
@@ -172,12 +172,12 @@ export default function PaymentInvoice() {
 
         )}
 
-        <div className="rounded-3xl bg-white p-10 shadow">
+        <div className="rounded-3xl mt-5 bg-white p-5 shadow">
                   {/* Header */}
 
           {/* Invoice Summary */}
 
-          <div className="mt-10 rounded-2xl border p-8">
+          <div className="mt-10 rounded-2xl border p-5">
 
             <h3 className="mb-8 text-2xl font-bold">
 
@@ -185,7 +185,7 @@ export default function PaymentInvoice() {
 
             </h3>
 
-            <div className="space-y-6">
+            <div className="space-y-6 min-w-screen lg:flex-row lg:items-center lg:justify-between">
 
               <div className="flex justify-between">
 

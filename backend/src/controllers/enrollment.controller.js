@@ -1,4 +1,4 @@
-import { enrollAndCreateInvoice } from "../services/enrollment.service.js";
+import { enrollAndCreateInvoice, getListOfEnrolledStudents } from "../services/enrollment.service.js";
 
 const enrollStudent = async (req, res) => {
     try {
@@ -11,4 +11,17 @@ const enrollStudent = async (req, res) => {
         res.status(500).json({ message: "Error enrolling student in course" });
     }
 }
-export { enrollStudent };
+
+const getEnrollmentData = async (req, res) => {
+    try {
+        const enrollments = await getListOfEnrolledStudents();
+        // if (!enrollments) {
+        //     return res.status(404).json({ message: 'Enrollments not found' });
+        // };
+        //console.log(enrollments)
+        res.status(200).json(enrollments);
+    } catch (error) {
+        res.status(500).json({ message: "Error getting enrollments" });
+    }
+}
+export { enrollStudent, getEnrollmentData };
