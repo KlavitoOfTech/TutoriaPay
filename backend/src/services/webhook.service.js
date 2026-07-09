@@ -9,7 +9,9 @@ const reconcilePayment = async (payloadData) => {
             console.log('Existing payment record:', paymentRes)
             return;
         }
+        console.log('account_ref:', aliasAccountReference)
         const virtualAccountRes = fetchVirtualAccount(aliasAccountReference);
+        console.log('virtual account:', virtualAccountRes)
         if (!virtualAccountRes) {
             console.log('No virtual account detected')
             throw new Error('Anonymous payment detected');
