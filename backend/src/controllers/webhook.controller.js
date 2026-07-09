@@ -18,7 +18,8 @@ const verifyAndReceiveWebhook = async (req, res) => {
             .createHmac('sha256', config.NOMBA_WEBHOOK_SIGNATURE)
             .update(payloadString)
             .digest('base64');
-        console.log('Hash:', expectedSignature)
+        console.log('expectedHash:', expectedSignature)
+        console.log('receivedHash:', nombaSignature)
         // if (expectedSignature !== nombaSignature) {
         //     console.log('Bad signature')
         //     return res.status(401).json({ message: 'Unauthorized payload' });

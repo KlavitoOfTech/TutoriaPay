@@ -17,12 +17,16 @@ const reconcilePayment = async (payloadData) => {
         const studentId = virtualAccountRes.studentId;
         const invoiceRes = await fetchInvoice(studentId);
         if (!invoiceRes) {
+            console.log('No invoice')
             await handleOverpayment(studentId, transactionAmount)
             return;
         }
+        console.log('invoice:', invoiceRes)
         await addPayment(invoiceRes.id, transactionAmount, transactionId, payloadData)
         const totalPaid = Number(invoiceRes.amount_paid) + Number(transactionAmount);
         const amountLeft = Number(invoiceRes.expected_amount) - Number(totalPaid);
+        console.log('totalpaid:', totalPaid)
+        console.log('amountleft:', amountLeft)
         if (amountLeft == 0) {
             const status = 'Paid'
             await updateInvoice(totalPaid, status, aliasAccountReference);
