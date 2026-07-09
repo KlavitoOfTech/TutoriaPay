@@ -14,10 +14,9 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/v1/webhooks', webhookRoutes)
-
 app.use(cors());
 app.use(express.json());
+app.use('/api/v1/webhooks', webhookRoutes)
 
 // Server health check
 app.get('/api/health', (req, res) => {
