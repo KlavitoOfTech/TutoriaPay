@@ -1,6 +1,6 @@
 # TutoriaPay
 
-TutoriaPay is a modern school fee management platform that simplifies how students pay for courses and how administrators manage payments. It provides a seamless experience for course registration, payment tracking, and secure authentication, with integration-ready support for Nomba payment services.
+TutoriaPay is a modern tutorial fee management platform that simplifies how students pay for courses and how administrators manage payments. It provides a seamless experience for course registration, payment tracking, and automated payment reconcilliation, with integration-ready support for Nomba payment services.
 
 ## ✨ Features
 
@@ -11,7 +11,7 @@ TutoriaPay is a modern school fee management platform that simplifies how studen
 * Payment history
 * Payment success and failure pages
 * Responsive modern UI
-* Nomba payment integration (Frontend)
+* Nomba payment integration
 * Dashboard for students and administrators
 
 ## 🛠️ Tech Stack
@@ -89,21 +89,19 @@ src/
 2. Student browses available courses.
 3. Student registers for selected courses.
 4. Student proceeds to the payment page.
-5. Payment is processed through Nomba.
-6. Payment status is displayed.
-7. Successful payments are recorded in the payment history.
+5. Transfer is made to the student virtual account.
+6. Payment is processed through Nomba and reconcilled.
+7. Payment status is displayed.
+8. Successful payments are recorded in the payment history.
 
 ---
 
 ## 📌 Future Improvements
 
-* Virtual Account support
-* Automatic payment reconciliation
 * Email notifications
 * Receipt generation
 * Student profile management
 * Admin analytics dashboard
-* Webhook integration
 * Recurring payment support
 
 ---
