@@ -23,13 +23,13 @@ export default function PaymentInvoice() {
 
   useEffect(() => {
     loadInvoice();
-  }, [paymentId]);
+  }, []);
 
   async function loadInvoice() {
     setLoading(true);
     try {
       const res = await api.get(`/payments/me/invoice`);
-      console.log(res.data)
+      //console.log(res.data)
       setInvoice(res.data);
     } catch (error) {
       console.error(error);
@@ -49,8 +49,8 @@ export default function PaymentInvoice() {
     setProcessing(true);
 
     try {
-      const response = await api.post(
-        `/payments/${paymentId}/pay`
+      const response = await api.get(
+        `/payments/me/status`
       );
 
       if (response.data.payment_url) {
@@ -71,12 +71,13 @@ export default function PaymentInvoice() {
     } catch (error) {
       console.error(error);
       setMessage(
-        error.response?.data?.message ||
-          "Unable to confirm payment."
+        error.response?.data?.message 
+          //"Unable to confirm payment."
       );
 
     } finally {
       setProcessing(false);
+      navigate("/dashboard");
     }
   }
 
@@ -137,13 +138,13 @@ export default function PaymentInvoice() {
 
     <div className="min-h-screen bg-slate-100">
 
-      <div className="mx-auto max-w-5xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-3 py-6">
 
-        <div className="mb-10 flex items-center justify-between">
+        {/* <div className="mb-10 flex items-center justify-between"> */}
 
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 rounded-xl border bg-white px-5 py-3 hover:bg-slate-50"
+            className="flex items-center gap-2 rounded-xl border bg-white px-3 py-2 hover:bg-slate-50"
           >
 
             <ArrowLeft size={18} />
@@ -160,7 +161,7 @@ export default function PaymentInvoice() {
 
           <div />
 
-        </div>
+        {/* </div> */}
 
         {message && (
 
@@ -172,12 +173,12 @@ export default function PaymentInvoice() {
 
         )}
 
-        <div className="rounded-3xl bg-white p-10 shadow">
+        <div className="rounded-3xl mt-5 bg-white p-5 shadow">
                   {/* Header */}
 
           {/* Invoice Summary */}
 
-          <div className="mt-10 rounded-2xl border p-8">
+          <div className="mt-10 rounded-2xl border p-5">
 
             <h3 className="mb-8 text-2xl font-bold">
 
@@ -185,7 +186,7 @@ export default function PaymentInvoice() {
 
             </h3>
 
-            <div className="space-y-6">
+            <div className="space-y-6 min-w-screen lg:flex-row lg:items-center lg:justify-between">
 
               <div className="flex justify-between">
 
@@ -273,18 +274,14 @@ export default function PaymentInvoice() {
 
           </div>
                     {/* Actions */}
-
-          <div className="mt-10 flex flex-col gap-4 border-t pt-8 md:flex-row md:items-center md:justify-between">
-
-            <div className="flex gap-4">
-
+            <div className="flex justify-center p-4">
               <button
                 disabled={
                   processing ||
                   invoice.status === "paid"
                 }
                 onClick={confirmPayment}
-                className="flex items-center gap-2 rounded-xl bg-emerald-600 px-8 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="flex min-w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-70"
               >
 
                 {processing ? (
@@ -306,18 +303,12 @@ export default function PaymentInvoice() {
                 ) : (
 
                   <>
-                    I Have Paid Already
-
-                    {/* <CreditCard size={18} /> */}
+                    I Have Paid
                   </>
 
                 )}
-
               </button>
-
             </div>
-
-          </div>
 
         </div>
 
@@ -328,127 +319,3 @@ export default function PaymentInvoice() {
   );
 
 }
-
-/*
-=========================================================
-BACKEND API CONTRACT
-=========================================================
-
-1. GET INVOICE
-
-GET /payments/:paymentId
-
-Response
-
-{
-  "id": 15,
-
-  "invoice_no": "INV-20260707-00015",
-
-  "invoice_date": "2026-07-07",
-
-  "due_date": "2026-07-14",
-
-  "currency": "NGN",
-
-  "amount": 50000,
-
-  "status": "pending",
-
-  "student": {
-      "id": 4,
-      "full_name": "John Doe",
-      "email": "john@example.com",
-      "phone": "+2348012345678"
-  },
-
-  "course": {
-      "id": 10,
-      "title": "Frontend Development",
-      "duration": "12 Weeks",
-      "instructor": "Jane Smith"
-  }
-}
-
-=========================================================
-
-2. START PAYMENT
-
-POST /payments/:paymentId/pay
-
-Response
-
-{
-    "payment_url":
-    "https://checkout.paystack.com/xxxxx"
-}
-
-OR
-
-{
-    "status":"paid"
-}
-
-=========================================================
-
-3. PAYMENT CALLBACK
-
-POST /payments/webhook
-
-Backend updates payment
-
-↓
-
-Payment status becomes
-
-Paid
-
-↓
-
-Dashboard payment history updates
-
-↓
-
-Student dashboard refreshes
-
-=========================================================
-
-RECOMMENDED FLOW
-
-Dashboard
-
-↓
-
-Courses
-
-↓
-
-Enroll
-
-↓
-
-Payment Page
-(list pending payments)
-
-↓
-
-Payment Invoice
-
-↓
-
-Proceed To Payment
-
-↓
-
-Payment Gateway
-
-↓
-
-Backend Callback
-
-↓
-
-Dashboard
-
-=========================================================
-*/

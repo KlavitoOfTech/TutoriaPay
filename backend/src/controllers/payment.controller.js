@@ -26,10 +26,27 @@ const getPaymentInvoice = async(req, res) => {
         if (!invoiceRes) {
             return res.status(404).json({ message: 'invoice not found' });
         };
-        console.log(invoiceRes) 
+        //console.log(invoiceRes) 
         res.status(200).json(invoiceRes);
     } catch (error) {
         res.status(500).json({ message: 'Error getting invoice' });
     }
 }
-export { fetchStudentEnrollments, getPaymentInvoice }
+
+const getPaymentStatus = async(req, res) => {
+    try {
+        const studentId = req.user.id;
+        if (!studentId) {
+            return res.status(400).json({ message: 'Student ID is required' });
+        };
+        const invoiceRes = await fetchPaymentInvoice(studentId)
+        if (!invoiceRes) {
+            return res.status(404).json({ message: 'invoice not found' });
+        };
+        //console.log(invoiceRes) 
+        res.status(200).json(invoiceRes);
+    } catch (error) {
+        res.status(500).json({ message: 'Error getting invoice' });
+    }
+}
+export { fetchStudentEnrollments, getPaymentInvoice, getPaymentStatus }

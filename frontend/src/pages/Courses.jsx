@@ -70,20 +70,20 @@ export default function Courses() {
 
       <section className="bg-gradient-to-r from-emerald-600 to-blue-600">
 
-        <div className="mx-auto max-w-7xl px-6 py-16 text-white">
+        <div className="mx-auto max-w-7xl px-6 py-6 text-white">
 
           <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
             Explore Courses
           </span>
 
           <h1 className="mt-6 text-5xl font-extrabold">
-            Learn New Skills
+            Explore Courses
           </h1>
 
-          <p className="mt-4 max-w-2xl text-lg text-emerald-50">
+          {/* <p className="mt-4 max-w-2xl text-lg text-emerald-50">
             Browse professional courses, enroll instantly,
             and securely pay your tuition with TutoriaPay.
-          </p>
+          </p> */}
 
         </div>
 
@@ -127,14 +127,14 @@ export default function Courses() {
 
                 {/* Image */}
 
-                <div className="flex h-44 items-center justify-center bg-gradient-to-br from-emerald-500 to-blue-600">
+                {/* <div className="flex h-44 items-center justify-center bg-gradient-to-br from-emerald-500 to-blue-600">
 
                   <BookOpen
                     size={70}
                     className="text-white"
                   />
 
-                </div>
+                </div> */}
 
                 {/* Body */}
 
@@ -216,7 +216,7 @@ export default function Courses() {
         <section className="mt-20 rounded-3xl bg-white p-10 shadow">
 
           <h2 className="mb-10 text-center text-3xl font-bold">
-            Why Study with TutoriaPay?
+            Why Use TutoriaPay?
           </h2>
 
           <div className="grid gap-8 md:grid-cols-3">

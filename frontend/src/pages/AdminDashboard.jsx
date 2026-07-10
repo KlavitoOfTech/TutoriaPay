@@ -33,7 +33,7 @@ export default function AdminDashboard() {
   function refreshAll() {
     api.get("/courses").then((r) => setCourses(r.data));
     api.get("/students").then((r) => setStudents(r.data));
-    // api.get("/enrollments").then((r) => setEnrollments(r.data));
+    api.get("/enrollments").then((r) => setEnrollments(r.data));
     // api.get("/payments").then((r) => setPayments(r.data));
   }
 
@@ -55,10 +55,10 @@ export default function AdminDashboard() {
     }
   }
 
-  async function confirmPayment(id) {
-    await api.patch(`/payments/${id}/confirm`);
-    refreshAll();
-  }
+  // async function confirmPayment(id) {
+  //   await api.patch(`/payments/${id}/confirm`);
+  //   refreshAll();
+  // }
 
   async function toggleStudentStatus(student) {
     const next = student.status === "active" ? "suspended" : "active";
@@ -140,7 +140,7 @@ export default function AdminDashboard() {
           </form>
 
           <div className="bg-white border rounded-lg shadow-sm divide-y">
-            {courses.map((c) => (
+            {courses?.map((c) => (
               <div key={c.id} className="px-4 py-3">
                 <p className="font-medium text-gray-900">{c.title}</p>
                 <p className="text-xs text-gray-500">₦{Number(c.price).toLocaleString()} · {c.status}</p>
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
 
       {tab === "students" && (
         <div className="bg-white border rounded-lg shadow-sm divide-y">
-          {students.map((s) => (
+          {students?.map((s) => (
             <div key={s.id} className="flex items-center justify-between px-4 py-3">
               <div>
                 <p className="font-medium text-gray-900">{s.full_name}</p>
@@ -171,9 +171,9 @@ export default function AdminDashboard() {
 
       {tab === "enrollments" && (
         <div className="bg-white border rounded-lg shadow-sm divide-y">
-          {enrollments.map((e) => (
+          {enrollments?.map((e) => (
             <div key={e.id} className="flex items-center justify-between px-4 py-3 text-sm">
-              <span>{e.full_name} → {e.title}</span>
+              <span>{e.course} → {e.enrollments}</span>
               <span className="capitalize text-gray-500">{e.status}</span>
             </div>
           ))}

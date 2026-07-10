@@ -9,6 +9,11 @@ import paymentRoutes from './routes/payment.routes.js';
 import webhookRoutes from './routes/webhook.routes.js'
 
 const app = express();
+app.use((req, res, next) => {
+    console.log(`➡️ Incoming Request: ${req.method} ${req.url}`);
+    next();
+});
+
 app.use(cors());
 app.use(express.json());
 
@@ -24,6 +29,5 @@ app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/admin', adminRoutes)
 app.use('/api/v1/payments', paymentRoutes)
 app.use('/api/v1/webhooks', webhookRoutes)
-
 
 export default app;

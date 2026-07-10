@@ -85,8 +85,26 @@ const createVirtualAccount = async (account_ref, studentName) => {
 }
 
 const fetchVirtualAccount = async (identifier) => {
-    const res = await api.delete(`/v1/accounts/virtual/${identifier}`)
+    const res = await api.get(`/v1/accounts/virtual/${identifier}`) // Identifier is account_ref or account number
     console.log(res.data)
     return res.data;
 }
-export { runBackgroundTokenManager, fetchAccessToken, createVirtualAccount, fetchVirtualAccount } 
+
+const fetchSubAccountTransaction = async (subAccountId) => {
+    const res = await api.get(`/v1/transactions/accounts/${subAccountId}/single`) // Identifier is account_ref or account number
+    console.log(res.data)
+    return res.data;
+}
+
+const fetchTransactionHistory = async (accountNumber, dateFrom, dateTo) => {
+    const res = await api.get(`/v1/transactions/virtual`, {
+        params: {
+            virtual_account: accountNumber
+            // dateFrom: dateFrom,
+            // dateTo: dateTo
+        }
+    })
+    console.log(res.data)
+    return res.data;
+}
+export { runBackgroundTokenManager, fetchAccessToken, createVirtualAccount, fetchVirtualAccount, fetchTransactionHistory, fetchSubAccountTransaction } 
