@@ -4,15 +4,12 @@ import { reconcilePayment } from '../services/webhook.service.js';
 
 const verifyAndReceiveWebhook = async (req, res) => {
     try {
-        const nombaSignature = req.headers['nomba-signature'];
+        const nombaSignature = req.headers['nomba-signature'];  // Grab signature header from incoming payload
         if (!nombaSignature) {
             return res.status(401).json({ message: 'Missing signature' });
         }
 
-        if (!req.body || typeof req.body !== 'object') {
-            return res.status(400).json({ message: 'Invalid webhook payload' });
-        }
-
+        // Handle incoming payload verification
         const payloadString = JSON.stringify(req.body);
         const expectedSignature = crypto
             .createHmac('sha256', config.NOMBA_WEBHOOK_SIGNATURE)
@@ -24,13 +21,24 @@ const verifyAndReceiveWebhook = async (req, res) => {
         //     console.log('Bad signature')
         //     return res.status(401).json({ message: 'Unauthorized payload' });
         // }
-        const { event_type, data } = req.body
-        console.log('Result:', req.body)
 
+        const { event_type, data } = req.body  // destructur request body
+
+        //  Handle failed payment
+        if (event_type == 'payment_failed') {
+            return res.status(200).json({ event_type })        
+        }
+
+        // Handle payment success event
         if (event_type == 'payment_success') {
             await reconcilePayment(data)
         }
-        // handle when event is not payment success
+
+        // Handle payment reversal
+        if (event_type == 'payment_reversal') {
+            return res.status(200).json({ event_type })
+        }
+
         console.log('Webhook processed successfully')
         res.status(200).json({ event_type });
     } catch (error) {

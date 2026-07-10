@@ -13,7 +13,7 @@ async function startServer() {
         await runBackgroundTokenManager()
         //fetchSubAccountTransaction('ef828e15-9c7a-4b68-ae5d-fb58256228d9')
        //await fetchVirtualAccount('fe8821ed-c00e-41f6-af1f-2878f3eafb67')
-        await fetchTransactionHistory('7918010552')
+        //await fetchTransactionHistory('7918010552')
 
         app.listen(PORT, () => {
             console.log(`app is listening at http://localhost:${PORT}`);

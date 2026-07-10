@@ -2,47 +2,55 @@ import { fetchInvoice, updateInvoice, updatewallet, fetchVirtualAccount, addWall
 
 const reconcilePayment = async (payloadData) => {
     try {
-        const {transaction} = payloadData;
-        const { transactionId, transactionAmount, aliasAccountReference } = transaction   
-        const paymentRes = await fetchPayment(transactionId); // checks for duplicate payment
+        const {transaction} = payloadData; // destructure payload data
+        const { transactionId, transactionAmount, aliasAccountReference } = transaction   // destructure transaction in payload data
+
+        // Check for duplicate payment
+        const paymentRes = await fetchPayment(transactionId);
         if (paymentRes) {
-            console.log('Existing payment record:', paymentRes)
             return;
         }
-        console.log('account_ref:', aliasAccountReference)
+
+        // Fetch existing virtual account data
         const virtualAccountRes = await fetchVirtualAccount(aliasAccountReference);
-        console.log('virtual account:', virtualAccountRes)
         if (!virtualAccountRes) {
-            console.log('No virtual account detected')
             throw new Error('Anonymous payment detected');
         };
+
+        // Fetch existing invoice
         const studentId = virtualAccountRes.student_id;
         const invoiceRes = await fetchInvoice(studentId);
         if (!invoiceRes) {
-            console.log('No invoice')
             await handleOverpayment(studentId, transactionAmount)
             return;
         }
-        console.log('invoice:', invoiceRes)
+
+        // Update payment log
         await addPayment(invoiceRes.id, transactionAmount, transactionId, payloadData)
+
+        // Handle reconciliation logic
         const totalPaid = Number(invoiceRes.amount_paid) + Number(transactionAmount);
         const amountLeft = Number(invoiceRes.expected_amount) - Number(totalPaid);
-        console.log('totalpaid:', totalPaid)
-        console.log('amountleft:', amountLeft)
+
+        // Handle full payment
         if (amountLeft == 0) {
-            const status = 'Paid'
-            await updateInvoice(totalPaid, status, aliasAccountReference);
+            const status = 'paid'
+            await updateInvoice(totalPaid, status, amountLeft, aliasAccountReference);
             return;
         }
+
+        // Handle over payment
         if (amountLeft < 0) {
-            const status = 'Paid'
+            const status = 'paid'
             const balance = Number(totalPaid) - Number(invoiceRes.expected_amount)
             await handleOverpayment (studentId, balance)
-            await updateInvoice(totalPaid, status, aliasAccountReference);
+            await updateInvoice(totalPaid, status, amountLeft, aliasAccountReference);
             return;
         }
+
+        // Handle under payment
         const status = 'partially_paid'
-        await updateInvoice(totalPaid, status, aliasAccountReference);
+        await updateInvoice(totalPaid, status, amountLeft, aliasAccountReference);
     } 
     catch (error) {
         console.error(error.response?.data || error.message);
@@ -52,13 +60,14 @@ const reconcilePayment = async (payloadData) => {
 
 const handleOverpayment = async (studentId, transactionBalance) => {
     try{
-        const walletRes = await fetchWallet(studentId);
+        const newBalance = Number(walletRes.balance) + Number(transactionBalance)  // Calculate new wallet balance
+        const walletRes = await fetchWallet(studentId);  // Fetch existing wallet
         if (!walletRes) {
-            await addWallet(studentId, transactionBalance);
+            await addWallet(studentId, transactionBalance);  // Create new wallet if none exists
+            await updatewallet(newBalance, studentId);
             return;
         }
-        const newBalance = Number(walletRes.balance) + Number(transactionBalance)
-        await updatewallet(newBalance, studentId);
+        await updatewallet(newBalance, studentId);  // Update wallet with new balance
     } catch (error) {
         console.error(error.response?.data || error.message);
     }

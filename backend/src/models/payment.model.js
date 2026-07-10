@@ -36,11 +36,11 @@ const fetchVirtualAccount = async (accountRef) => {
     return res.rows[0];
 }
 
-const updateInvoice = async (amountPaid, status, accountRef) => {
+const updateInvoice = async (amountPaid, status, newExpectedAmount, accountRef) => {
     const queryText = `UPDATE invoices 
-        SET amount_paid = $1, status = $2 
-        WHERE account_ref = $3`;
-    const res = await query(queryText, [amountPaid, status, accountRef]);
+        SET amount_paid = $1, status = $2, expected_amount = $3 
+        WHERE account_ref = $4`;
+    const res = await query(queryText, [amountPaid, status, newExpectedAmount, accountRef]);
 }
 
 const updateInvoiceAmount =  async (newAmount, studentId) => {
