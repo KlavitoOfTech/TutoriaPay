@@ -91,7 +91,7 @@ const fetchVirtualAccount = async (identifier) => {
 }
 
 const fetchSubAccountTransaction = async (subAccountId) => {
-    const res = await api.get(`/v1/transactions/accounts/${subAccountId}/single`) // Identifier is account_ref or account number
+    const res = await api.get(`/v1/transactions/accounts/${subAccountId}`) // Identifier is account_ref or account number
     console.log(res.data)
     return res.data;
 }
@@ -107,4 +107,24 @@ const fetchTransactionHistory = async (accountNumber, dateFrom, dateTo) => {
     console.log(res.data)
     return res.data;
 }
-export { runBackgroundTokenManager, fetchAccessToken, createVirtualAccount, fetchVirtualAccount, fetchTransactionHistory, fetchSubAccountTransaction } 
+
+const transferToBankAccount = async () => {
+    try {
+        const subAccountId = config.NOMBA_SUB_ACCOUNT_ID
+        const res = await api.post(`/v2/transfers/bank/${subAccountId}`, {
+            amount: 650,
+            accountNumber: "3189665888",
+            accountName: "ADISA  MUIZ OPEYEMI",
+            bankCode: "011",
+            merchantTxRef: "UNQ_123abGGhh5546",
+            senderName: "Muiz Nomba",
+            narration: "Testing Payment"
+        })
+        console.log(res)
+        return res.data
+    } catch (error) {
+        console.error(error.response?.data || error.message)
+    }
+}
+
+export { transferToBankAccount, runBackgroundTokenManager, fetchAccessToken, createVirtualAccount, fetchVirtualAccount, fetchTransactionHistory, fetchSubAccountTransaction } 
