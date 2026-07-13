@@ -18,6 +18,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import PaymentInvoice from "./pages/PaymentInvoice";
 import Profile from "./pages/Profile";
 // import NotFound from "./pages/NotFound";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 
 export default function App() {
   return (
@@ -86,6 +88,16 @@ export default function App() {
             path="*"
             element={<NotFound />}
           /> */}
+
+          <Route
+              path="/payment/success/:paymentId"
+              element={<PaymentSuccess />}
+          />
+
+          <Route
+              path="/payment/failed/:paymentId"
+              element={<PaymentFailed />}
+          />
          
         </Routes>
       </main>
